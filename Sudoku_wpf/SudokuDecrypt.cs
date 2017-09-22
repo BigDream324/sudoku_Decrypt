@@ -47,20 +47,48 @@ namespace Sudoku_wpf
         public bool SetValue(int v,bool Fixed)
         {
             Console.WriteLine("SetValue row:" + row.ToString() + " colume:" + colume.ToString() + " value:" + v.ToString());
-            value = v;
-            IsFixed = Fixed;
-            if (IsFixed == true)
+            if (v == 0)
             {
-                available.Clear();
-                available.Add(v);
-                available_temp.Clear();
-                available_temp.Add(v);
+                value = v;
+                available = new List<int>();
+                available.Add(1);
+                available.Add(2);
+                available.Add(3);
+                available.Add(4);
+                available.Add(5);
+                available.Add(6);
+                available.Add(7);
+                available.Add(8);
+                available.Add(9);
+                available_temp = new List<int>();
+                available_temp.Add(1);
+                available_temp.Add(2);
+                available_temp.Add(3);
+                available_temp.Add(4);
+                available_temp.Add(5);
+                available_temp.Add(6);
+                available_temp.Add(7);
+                available_temp.Add(8);
+                available_temp.Add(9);
+                IsFixed = false;
+            }
+            else
+            {
+                value = v;
+                IsFixed = Fixed;
+                if (IsFixed == true)
+                {
+                    available.Clear();
+                    available.Add(v);
+                    available_temp.Clear();
+                    available_temp.Add(v);
+                }
             }
             return true;
         }
         public bool RemoveAvailable(int v)
         {
-            Console.WriteLine("RemoveAvailable row:" + row.ToString() + " colume:" + colume.ToString()+" value:"+v.ToString());
+            //Console.WriteLine("RemoveAvailable row:" + row.ToString() + " colume:" + colume.ToString()+" value:"+v.ToString());
             if (available.Contains(v))
             {
                 available.Remove(v);
@@ -107,6 +135,7 @@ namespace Sudoku_wpf
     public class SudokuDecrypt
     {
         Unit[][] data;
+        public List<int[][]> AnswerList = new List<int[][]>();
         public SudokuDecrypt()
         {
             data = new Unit[9][];
@@ -166,17 +195,6 @@ namespace Sudoku_wpf
             List<PointEx> pointList = GetRelatedPoint(r, c);
             foreach (PointEx p in pointList)
             {
-                if (data[p.row][p.colume].IsFixed == true)
-                {
-                    if (data[p.row][p.colume].value == value)//此数独无解
-                    {
-                        return false;
-                    }
-                    else
-                    {
-                        continue;
-                    }
-                }
                 if (data[p.row][p.colume].available.Count == 1)
                 {
                     if (data[p.row][p.colume].available[0] == value)
@@ -204,12 +222,6 @@ namespace Sudoku_wpf
             }
             return true;
         }
-        class RemoveOperate
-        {
-            public int row;
-            public int colume;
-            public int value;
-        }
         public bool TryRemoveDouble(int r, int c)
         {
             if (c > 8)
@@ -221,7 +233,12 @@ namespace Sudoku_wpf
             {
                 return true;
             }
-            //Console.WriteLine("TryRemoveDouble row:" + r.ToString() + " colume:" + c.ToString());
+            //StringBuilder sb = new StringBuilder();
+            //sb.Append("row:");
+            //sb.Append(r);
+            //sb.Append(" colume:");
+            //sb.Append(c);
+            //Console.WriteLine(sb);
             bool value_result = false;
             foreach (var v in data[r][c].available)
             {
@@ -248,20 +265,71 @@ namespace Sudoku_wpf
                     bool res = TryRemoveDouble(r, c + 1);
                     if (res == true)
                     {
-                        value_result = true;
-                        return true;
+                        //value_result = false;
+                        if (r == 8 && c == 8)
+                        {
+                            SaveAnswer();
+                        }
                     }
                 }
             }
             if (value_result == false)
             {
                 data[r][c].ResetAvailableTemp();
+                if (r == 0 && c == 0)
+                {
+                    if (AnswerList.Count > 0)
+                    {
+                        return true;
+                    }
+                }
+
                 return false;
             }
-            else
+            return true;
+        }
+        private void SaveAnswer()
+        {
+            int[][] answer = new int[9][];
+            for (int i = 0; i < 9; i++)
             {
-                return true;
+                answer[i] = new int[9];
+                for (int j = 0; j < 9; j++)
+                {
+                    if (data[i][j].available_temp.Count == 1)
+                    {
+                        answer[i][j] = data[i][j].available_temp[0];
+                    }
+                    else
+                    {
+                        //还不能保存答案
+                        MessageBox.Show("Some problems with answer.");
+                    }
+
+                }
             }
+            AnswerList.Add(answer);
+        }
+        public bool CheckQuestion()
+        {
+            for (int i = 0; i < 9; i++)
+            {
+                for (int j = 0; j < 9; j++)
+                {
+                    if (data[i][j].IsFixed == true)
+                    {
+                        List<PointEx> pointList = GetRelatedPoint(i, j);
+                        foreach (var point in pointList)
+                        {
+                            if (data[point.row][point.colume].IsFixed == true && data[point.row][point.colume].value == data[i][j].value)
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+            return true;
         }
         public bool StartDecrypt()
         {
@@ -281,8 +349,7 @@ namespace Sudoku_wpf
                 }
             }
             //递归去试
-            TryRemoveDouble(0, 0);
-            return true;
+            return TryRemoveDouble(0, 0);
         }
     }
 }

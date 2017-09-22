@@ -43,6 +43,8 @@ namespace Sudoku_wpf
 
         private void m_Btn_New_Click(object sender, RoutedEventArgs e)
         {
+            comboBox.SelectedIndex = -1;
+            comboBox.Items.Clear();
             sudo = new SudokuDecrypt();
             for (int i = 0; i < 10; i++)
             {
@@ -84,14 +86,38 @@ namespace Sudoku_wpf
         }
         private void m_Btn_Decrypt_Click(object sender, RoutedEventArgs e)
         {
-            Task.Factory.StartNew(() => {
-                sudo.StartDecrypt();
-            });
+            if (sudo.CheckQuestion() == false)
+            {
+                MessageBox.Show("Question is not available.");
+                return;
+            }
             DispatcherTimer timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromSeconds(0.1);
-            timer.Tick += (p,q) => {
+            timer.Interval = TimeSpan.FromSeconds(0.01);
+            timer.Tick += (p, q) => {
                 m_Btn_Refresh_Click(null, null);
             };
+            Task.Factory.StartNew(() => {
+                bool res = sudo.StartDecrypt();
+                this.Dispatcher.BeginInvoke( DispatcherPriority.Normal,new Action(() =>
+                {
+                    if (res == true)
+                    {
+                        for (int i=0;i<sudo.AnswerList.Count;i++)
+                        {
+                            comboBox.Items.Add("Answer" + (i + 1).ToString());
+                        }
+                        if (comboBox.Items.Count != 0)
+                        {
+                            comboBox.SelectedIndex = 0;
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("This Sudoku has no answer.");
+                    }
+                    timer.Stop();
+                }));
+            });
             timer.Start();
         }
 
@@ -121,6 +147,7 @@ namespace Sudoku_wpf
 
         private void m_Btn_Test_Click(object sender, RoutedEventArgs e)
         {
+            m_Btn_New_Click(null, null);
             sudo.getUnit(0, 0).SetValue(8, true);
             sudo.getUnit(0, 1).SetValue(6, true);
             sudo.getUnit(0, 4).SetValue(7, true);
@@ -175,6 +202,7 @@ namespace Sudoku_wpf
 
         private void m_Btn_Test2_Click(object sender, RoutedEventArgs e)
         {
+            m_Btn_New_Click(null, null);
             sudo.getUnit(0, 1).SetValue(6, true);
             sudo.getUnit(0, 6).SetValue(7, true);
 
@@ -212,6 +240,7 @@ namespace Sudoku_wpf
 
         private void m_Btn_Test3_Click(object sender, RoutedEventArgs e)
         {
+            m_Btn_New_Click(null, null);
             sudo.getUnit(0, 0).SetValue(8, true);
             sudo.getUnit(0, 3).SetValue(9, true);
             sudo.getUnit(0, 4).SetValue(5, true);
@@ -249,6 +278,21 @@ namespace Sudoku_wpf
             sudo.getUnit(8, 4).SetValue(8, true);
             sudo.getUnit(8, 6).SetValue(6, true);
             m_Btn_Refresh_Click2(null, null);
+        }
+
+        private void comboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (comboBox.SelectedIndex == -1)
+                return;
+            int[][] answer = sudo.AnswerList[comboBox.SelectedIndex];
+            foreach (UIElement elem in m_grid.Children)
+            {
+                if (elem is UserControl1)
+                {
+                    UserControl1 uc = elem as UserControl1;
+                    uc.DisplayAnswer(answer[uc.row][uc.colume]);
+                }
+            }
         }
     }
 }

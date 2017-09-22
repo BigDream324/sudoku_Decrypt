@@ -12,12 +12,13 @@
             <Grid x:Name="m_grid">
             </Grid>
         </Border>
-        <Button x:Name="m_Btn_Decrypt" Content="Decrypt" Click="m_Btn_Decrypt_Click" HorizontalAlignment="Left" Margin="424,262,0,0" VerticalAlignment="Top" Width="75"/>
-        <Button x:Name="m_Btn_Refresh" Content="Refresh" Click="m_Btn_Refresh_Click" HorizontalAlignment="Left" Margin="424,163,0,0" VerticalAlignment="Top" Width="75"/>
-        <Button x:Name="m_Btn_Refresh_Copy" Content="Refresh2" Click="m_Btn_Refresh_Click2" HorizontalAlignment="Left" Margin="424,199,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button x:Name="m_Btn_Decrypt" Content="Decrypt" Click="m_Btn_Decrypt_Click" HorizontalAlignment="Left" Margin="427,236,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button x:Name="m_Btn_Refresh" Content="Refresh" Click="m_Btn_Refresh_Click" HorizontalAlignment="Left" Margin="425,82,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button x:Name="m_Btn_Refresh_Copy" Content="Refresh2" Click="m_Btn_Refresh_Click2" HorizontalAlignment="Left" Margin="426,123,0,0" VerticalAlignment="Top" Width="75"/>
         <Button x:Name="m_Btn_New" Content="New" Click="m_Btn_New_Click" HorizontalAlignment="Left" Margin="424,28,0,0" VerticalAlignment="Top" Width="75"/>
-        <Button x:Name="m_Btn_Test" Content="Test1" Click="m_Btn_Test_Click" HorizontalAlignment="Left" Margin="10,25,0,0" VerticalAlignment="Top" Width="75"/>
-        <Button x:Name="m_Btn_Test_Copy" Content="Test2" Click="m_Btn_Test2_Click" HorizontalAlignment="Left" Margin="10,50,0,0" VerticalAlignment="Top" Width="75"/>
-        <Button x:Name="m_Btn_Test_Copy3" Content="Test3" Click="m_Btn_Test3_Click" HorizontalAlignment="Left" Margin="11,75,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button x:Name="m_Btn_Test" Content="Simple" Click="m_Btn_Test_Click" HorizontalAlignment="Left" Margin="10,25,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button x:Name="m_Btn_Test_Copy" Content="Medium" Click="m_Btn_Test2_Click" HorizontalAlignment="Left" Margin="10,50,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button x:Name="m_Btn_Test_Copy3" Content="High" Click="m_Btn_Test3_Click" HorizontalAlignment="Left" Margin="11,75,0,0" VerticalAlignment="Top" Width="75"/>
+        <ComboBox x:Name="comboBox" HorizontalAlignment="Left" SelectionChanged="comboBox_SelectionChanged" FontSize="10" Margin="425,269,0,0" VerticalAlignment="Top" Width="77"/>
     </Grid>
 </Window>

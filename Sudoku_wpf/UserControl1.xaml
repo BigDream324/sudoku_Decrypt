@@ -9,6 +9,6 @@
     <Grid Focusable="True">
         <TextBlock x:Name="textBlock" Text="1" FontSize="20" Visibility="Visible" VerticalAlignment="Center" HorizontalAlignment="Center">
         </TextBlock>
-        <TextBox x:Name="textBox" PreviewTextInput="textBox_PreviewTextInput" Background="#999999" Visibility="Collapsed" TextAlignment="Center" BorderThickness="0" FontSize="20" VerticalAlignment="Center" Text="{Binding Path=Text,ElementName=textBlock}"></TextBox>
+        <TextBox x:Name="textBox" PreviewTextInput="textBox_PreviewTextInput" Keyboard.KeyDown="textBox_KeyDown" Background="#999999" Visibility="Collapsed" TextAlignment="Center" BorderThickness="0" FontSize="20" VerticalAlignment="Center" Text="{Binding Path=Text,ElementName=textBlock}"></TextBox>
     </Grid>
 </UserControl>

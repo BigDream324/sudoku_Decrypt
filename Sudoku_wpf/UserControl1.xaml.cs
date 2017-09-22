@@ -28,11 +28,31 @@ namespace Sudoku_wpf
         }
         public int row = 0;
         public int colume = 0;
+        bool enable = true;
         Unit unit = null;
         public void setUint(Unit u)
         {
             unit = u;
             Refresh(false);
+        }
+        public void SetEnable(bool e)
+        {
+            enable = e;
+            if (enable == false)
+            {
+                SetNotFocus();
+            }
+        }
+        public void DisplayAnswer(int data)
+        {
+            if (unit.IsFixed == false)
+            {
+                textBlock.Foreground = new SolidColorBrush(Colors.Blue);
+            }
+            textBlock.FontSize = 20;
+            textBox.FontSize = 20;
+            textBox.Text = data.ToString();
+            textBlock.Text = data.ToString();
         }
         public void Refresh(bool showList)
         {
@@ -78,10 +98,14 @@ namespace Sudoku_wpf
             if (textBox.Text.Length > 0)
             {
                 char c = textBox.Text.ToCharArray()[0];
-                if (c >= '1' && c <= '9')
+                if (c >= '0' && c <= '9')
                 {
                     unit?.SetValue(int.Parse(textBox.Text.Substring(0, 1)), true);
                 }
+            }
+            else
+            {
+                unit?.SetValue(0, true);
             }
         }
         private void textBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -90,6 +114,7 @@ namespace Sudoku_wpf
             if (c >= '0' && c <= '9')
             {
                 textBox.Text = c.ToString();
+                textBlock.Text = textBox.Text;
                 SetNotFocus();
                 e.Handled = true;
             }
@@ -100,6 +125,8 @@ namespace Sudoku_wpf
         }
         private void UserControl_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            if (enable == false)
+                return;
             textBox.Visibility = Visibility.Visible;
             textBlock.Visibility = Visibility.Collapsed;
             textBox.Focus();
@@ -136,6 +163,14 @@ namespace Sudoku_wpf
             }
             this.BorderThickness = th;
             this.BorderBrush = new SolidColorBrush(Colors.Black);
+        }
+
+        private void textBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter || e.Key == Key.Back)
+            {
+                SetNotFocus();
+            }
         }
     }
 }
