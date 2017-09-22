@@ -294,5 +294,9 @@ namespace Sudoku_wpf
                 }
             }
         }
+        private void button_About_Click(object sender, RoutedEventArgs e)
+        {
+            new About() { Owner=this}.ShowDialog();
+        }
     }
 }
