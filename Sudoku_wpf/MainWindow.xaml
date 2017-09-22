@@ -1,0 +1,23 @@
+﻿<Window x:Class="Sudoku_wpf.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Sudoku_wpf"
+        
+        mc:Ignorable="d" Loaded="Window_Loaded"
+        Title="MainWindow" Height="350" Width="525">
+    <Grid>
+        <Border BorderBrush="Black" BorderThickness="2" Width="300" Height="300">
+            <Grid x:Name="m_grid">
+            </Grid>
+        </Border>
+        <Button x:Name="m_Btn_Decrypt" Content="Decrypt" Click="m_Btn_Decrypt_Click" HorizontalAlignment="Left" Margin="424,262,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button x:Name="m_Btn_Refresh" Content="Refresh" Click="m_Btn_Refresh_Click" HorizontalAlignment="Left" Margin="424,163,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button x:Name="m_Btn_Refresh_Copy" Content="Refresh2" Click="m_Btn_Refresh_Click2" HorizontalAlignment="Left" Margin="424,199,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button x:Name="m_Btn_New" Content="New" Click="m_Btn_New_Click" HorizontalAlignment="Left" Margin="424,28,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button x:Name="m_Btn_Test" Content="Test1" Click="m_Btn_Test_Click" HorizontalAlignment="Left" Margin="10,25,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button x:Name="m_Btn_Test_Copy" Content="Test2" Click="m_Btn_Test2_Click" HorizontalAlignment="Left" Margin="10,50,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button x:Name="m_Btn_Test_Copy3" Content="Test3" Click="m_Btn_Test3_Click" HorizontalAlignment="Left" Margin="11,75,0,0" VerticalAlignment="Top" Width="75"/>
+    </Grid>
+</Window>
